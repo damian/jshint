@@ -5,4 +5,5 @@ require "jshint/railtie" if defined?(Rails)
 
 module Jshint
   autoload :Lint, 'jshint/lint'
+  autoload :Configuration, 'jshint/configuration'
 end

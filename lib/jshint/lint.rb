@@ -1,16 +1,20 @@
 require "execjs"
 require "multi_json"
+require "jshint/configuration"
 
 module Jshint
   class Lint
     attr_reader :errors, :config
 
-    RAILS_ASSET_PATHS = %W{app vendor assets}
+    RAILS_JS_ASSET_PATHS = [
+      'app/assets/javascripts',
+      'vendor/assets/javascripts',
+      'lib/assets/javascripts'
+    ]
 
-    def initialize(file_paths = [], config_path = nil)
-      @config_path = config_path || File.join(Rails.root, '.jshintrc')
+    def initialize(config_path = nil)
+      @config = Configuration.new(config_path).options
       @errors = {}
-      @js_asset_paths = parse_file_paths
     end
 
     def lint
@@ -26,12 +30,8 @@ module Jshint
 
     private
 
-    def setup_rails_js_asset_paths
-      RAILS_ASSET_PATHS.dup.map { |path| File.join(Rails.root, path, 'assets', 'javascripts') }
-    end
-
-    def parse_file_paths
-      paths = setup_rails_js_asset_paths
+    def search_paths
+      paths = RAILS_ASSET_PATHS.dup
       if files.is_a? Array
         files.each do |file|
           paths = paths.map { |path| File.join(path, file) }
@@ -45,10 +45,6 @@ module Jshint
 
     def files
       @files ||= config[:files]
-    end
-
-    def config
-      @config ||= MultiJson.load(File.open(@config_path, 'r:UTF-8').read, :symbolize_keys => true)
     end
 
     def jshint_globals
@@ -77,7 +73,7 @@ module Jshint
 
     def js_files
       js_asset_files = []
-      @js_asset_paths.each do |path|
+      search_paths.each do |path|
         Dir.glob(path) do |file|
           js_asset_files << file
         end
