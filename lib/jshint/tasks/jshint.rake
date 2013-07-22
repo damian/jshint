@@ -3,7 +3,7 @@ require 'jshint/reporters'
 
 task :default => [:jshint]
 
-desc "Lints the outputted application.js file from the asset pipeline"
+desc "Runs JSHint, the JavaScript lint tool over this projects JavaScript assets"
 task :jshint => :environment do
   linter = Jshint::Lint.new
   linter.lint

@@ -1,6 +1,7 @@
 require "execjs"
 require "multi_json"
 require "jshint/configuration"
+require 'rails'
 
 module Jshint
   class Lint
@@ -13,7 +14,7 @@ module Jshint
     ]
 
     def initialize(config_path = nil)
-      @config = Configuration.new(config_path).options
+      @config = Configuration.new(config_path)
       @errors = {}
     end
 
@@ -31,7 +32,7 @@ module Jshint
     private
 
     def search_paths
-      paths = RAILS_ASSET_PATHS.dup
+      paths = RAILS_JS_ASSET_PATHS.dup
       if files.is_a? Array
         files.each do |file|
           paths = paths.map { |path| File.join(path, file) }
@@ -60,7 +61,7 @@ module Jshint
     end
 
     def asset_paths
-      @asset_paths ||= Rails.application.class.assets
+      @asset_paths ||= ::Rails.application.class.assets
     end
 
     def jshint_file
