@@ -21,7 +21,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "therubyracer", "~> 0.11.4"
   spec.add_dependency "execjs", "~> 1.4.0"
   spec.add_dependency "railties", ">= 3.2.0"
-  spec.add_dependency "activesupport", ">= 3.2.0"
   spec.add_dependency 'multi_json', '~> 1.0'
 
   spec.add_development_dependency "bundler", "~> 1.3"

@@ -1,7 +1,6 @@
 require "execjs"
 require "multi_json"
 require "jshint/configuration"
-require 'rails'
 
 module Jshint
   class Lint
@@ -19,17 +18,30 @@ module Jshint
     end
 
     def lint
-      js_files.each do |file|
-        file_content = MultiJson.dump(File.read(file))
+      javascript_files.each do |file|
+        file_content = get_file_content_as_json(file)
         code = %(
-          JSHINT(#{file_content}, #{jshint_opts}, #{jshint_globals});
+          JSHINT(#{file_content}, #{jshint_options}, #{jshint_globals});
           return JSHINT.errors;
         )
         errors[file] = context.exec(code)
       end
     end
 
+    def get_json(hash)
+      MultiJson.dump(hash)
+    end
+
     private
+
+    def get_file_content(path)
+      File.open(path, "r:UTF-8").read
+    end
+
+    def get_file_content_as_json(path)
+      content = get_file_content(path)
+      get_json(content)
+    end
 
     def search_paths
       paths = RAILS_JS_ASSET_PATHS.dup
@@ -45,34 +57,30 @@ module Jshint
     end
 
     def files
-      @files ||= config[:files]
+      @files ||= config.files
     end
 
     def jshint_globals
-      @jshint_globals ||= MultiJson.dump(config[:options][:globals])
+      @jshint_globals ||= get_json(config.global_variables)
     end
 
-    def jshint_opts
-      @jshint_opts ||= MultiJson.dump(config[:options].slice!(:globals))
+    def jshint_options
+      @jshint_options ||= get_json(config.lint_options)
+    end
+
+    def jshint_path
+      File.join(Jshint.root, 'vendor', 'assets', 'javascripts', 'jshint.js')
     end
 
     def jshint
-      @jshint ||= asset_paths.find_asset('jshint')
-    end
-
-    def asset_paths
-      @asset_paths ||= ::Rails.application.class.assets
-    end
-
-    def jshint_file
-      @jshint_file ||= File.open(jshint.pathname, "r:UTF-8").read
+      @jshint ||= get_file_content(jshint_path)
     end
 
     def context
-      @context ||= ExecJS.compile("var window = {};\n" + jshint_file)
+      @context ||= ExecJS.compile("var window = {};\n" + jshint)
     end
 
-    def js_files
+    def javascript_files
       js_asset_files = []
       search_paths.each do |path|
         Dir.glob(path) do |file|

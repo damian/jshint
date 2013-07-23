@@ -8,7 +8,7 @@ describe Jshint::Configuration do
   before do
     described_class.any_instance.stub(:default_config_path).and_return('/foo/bar.yml')
     described_class.any_instance.stub(:read_config_file).and_return(yaml)
-    described_class.any_instance.stub(:convert_config_to_yaml).and_return(YAML.load(yaml))
+    described_class.any_instance.stub(:parse_yaml_config).and_return(YAML.load(yaml))
   end
 
   it "should fall back to the default JSHint config file when one is provided" do
@@ -25,7 +25,7 @@ describe Jshint::Configuration do
 
   it "should allow the developer to index in to config options" do
     config = described_class.new
-    config[:include].should == file[:include]
-    config[:curly].should == file[:curly]
+    config[:include].should == file["include"]
+    config[:curly].should == file["curly"]
   end
 end
