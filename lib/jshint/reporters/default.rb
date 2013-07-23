@@ -20,7 +20,9 @@ module Jshint::Reporters
     end
 
     def print_errors_for_file(file, errors)
-      errors.map { |error| output << "#{file}: line #{error['line']}, col #{error['character']}, #{error['reason']}\n" }
+      errors.map do |error|
+        output << "#{file}: line #{error['line']}, col #{error['character']}, #{error['reason']}\n" unless error.nil?
+      end
     end
 
     def print_footer(len)
