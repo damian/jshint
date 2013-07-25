@@ -2,7 +2,7 @@ module Jshint::Reporters
   class Default
     attr_reader :output
 
-    def initialize(results = [])
+    def initialize(results = {})
       @results = results
       @output = ''
     end
