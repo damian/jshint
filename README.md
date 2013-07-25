@@ -1,6 +1,6 @@
 # Jshint
 
-![travis-ci](https://api.travis-ci.org/damian/jshint.png)](http://travis-ci.org/#!/damian/jshint) 
+[![travis-ci](https://api.travis-ci.org/damian/jshint.png)](http://travis-ci.org/#!/damian/jshint) 
 
 
 
