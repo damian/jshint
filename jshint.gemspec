@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "therubyracer", "~> 0.11.4"
+  spec.add_dependency "therubyracer", "~> 0.10.2"
   spec.add_dependency "execjs", "~> 1.4.0"
   spec.add_dependency "railties", ">= 3.2.0"
   spec.add_dependency 'multi_json', '~> 1.0'
@@ -26,4 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
+  spec.add_development_dependency "yard"
 end
