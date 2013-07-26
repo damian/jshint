@@ -1,9 +1,14 @@
 require 'yaml'
 
 module Jshint
+  # Configuration object containing JSHint lint settings
   class Configuration
+
+    # @return [Hash] the configration options
     attr_reader :options
 
+    # Initializes our configuration object
+    #
     # @param path [String] The path to the config file
     def initialize(path = nil)
       @path = path || default_config_path

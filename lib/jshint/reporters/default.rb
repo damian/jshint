@@ -1,5 +1,8 @@
 module Jshint::Reporters
+  # Outputs a basic lint report suitable for STDOUT
   class Default
+
+    # @return [String] the report output
     attr_reader :output
 
     # Sets up the output string for the final report
