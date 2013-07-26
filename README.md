@@ -1,8 +1,7 @@
 # Jshint
 
 [![travis-ci](https://api.travis-ci.org/damian/jshint.png)](http://travis-ci.org/#!/damian/jshint)
-[![Code Climate](https://codeclimate.com/repos/51f23248c7f3a36af504a34e/badges/2b4d47284a3bc5953b4e/gpa.png)](https://codeclimate.com/repos/51f23248c7f3a36af504a34e/feed)
-
+[![Code Climate](https://codeclimate.com/github/damian/jshint.png)](https://codeclimate.com/github/damian/jshint)
 
 
 TODO: Write a gem description
