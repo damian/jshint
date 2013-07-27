@@ -20,7 +20,7 @@ module Jshint
     # @param key [Symbol]
     # @return The value of the of the options Hash at the passed in key
     def [](key)
-      options[key.to_s]
+      options[:options][key.to_sym]
     end
 
     # Returns a Hash of global variables if one exists
@@ -34,7 +34,7 @@ module Jshint
     #
     # @return [Hash, nil] The key value pairs or nil
     def global_variables
-      options["options"]["globals"]
+      options[:options][:globals]
     end
 
     # Returns a Hash of options to be used by JSHint
@@ -48,7 +48,7 @@ module Jshint
     #   }
     # @return [Hash, nil] The key value pairs of options or nil
     def lint_options
-      options["options"].slice!("globals")
+      @lint_options ||= options[:options].reject { |key| key == :globals }
     end
 
     # Returns the list of files that JSHint should lint over relatives to the Application root
@@ -61,7 +61,7 @@ module Jshint
     #
     # @return [Array<String>] An Array of String files paths
     def files
-      options["files"]
+      options[:files]
     end
 
     private
@@ -75,6 +75,8 @@ module Jshint
     end
 
     def default_config_path
+      require 'pry'
+      binding.pry
       File.join(Rails.root, 'config', 'jshint.yml')
     end
   end
