@@ -88,4 +88,25 @@ describe Jshint::Reporters::Default do
       subject.output.should include "'app' is not defined"
     end
   end
+
+  describe :report do
+    it "should call print errors for file 1 time" do
+      subject.should_receive(:print_errors_for_file)
+      subject.report
+    end
+
+    it "should print the report footer" do
+      subject.should_receive(:print_footer).with(3)
+      subject.report
+    end
+
+    it "should return a thorough report" do
+      subject.report.length.should >= 10
+    end
+
+    it "should return 0 errors when it has no results" do
+      subject.instance_variable_set(:@results, {})
+      subject.report.should include "0 errors"
+    end
+  end
 end

@@ -46,6 +46,7 @@ describe Jshint::Lint do
         ))
         subject.lint
       end
+
       it "should add two error messages to the errors Hash" do
         subject.errors[file].length.should == 2
       end
@@ -63,6 +64,11 @@ describe Jshint::Lint do
             }
           eos
         ))
+        subject.lint
+      end
+
+      it "should retrieve the files content" do
+        subject.should_receive(:get_file_content_as_json).with(file)
         subject.lint
       end
 
