@@ -2,7 +2,7 @@
 
 [![travis-ci](https://api.travis-ci.org/damian/jshint.png)](http://travis-ci.org/#!/damian/jshint)
 [![Code Climate](https://codeclimate.com/github/damian/jshint.png)](https://codeclimate.com/github/damian/jshint)
-
+[![Coverage Status](https://coveralls.io/repos/damian/jshint/badge.png?branch=master)](https://coveralls.io/r/damian/jshint?branch=master)
 
 TODO: Write a gem description
 
