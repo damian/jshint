@@ -36,7 +36,7 @@ To start using JSHint simply run the Rake task:
 bundle exec rake jshint
 ```
 
-This Rake task runs JSHint across all of your JavaScript assets within the following three folders to ensure that they're lint free, and outputs a report to STDOUT.
+This Rake task runs JSHint across all the JavaScript assets within the following three folders to ensure that they're lint free. Using that data it builds a report which is shown in STDOUT.
 
 ```bash
 your-rails-project/app/assets/javascripts

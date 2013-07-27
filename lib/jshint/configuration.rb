@@ -75,8 +75,6 @@ module Jshint
     end
 
     def default_config_path
-      require 'pry'
-      binding.pry
       File.join(Rails.root, 'config', 'jshint.yml')
     end
   end
