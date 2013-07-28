@@ -22,7 +22,7 @@ module Jshint
     # Sets up our Linting behaviour
     #
     # @param config_path [String] The absolute path to a configuration YAML file
-    # @retur [void]
+    # @return [void]
     def initialize(config_path = nil)
       @config = Configuration.new(config_path)
       @errors = {}
