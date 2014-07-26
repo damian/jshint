@@ -79,7 +79,7 @@ TEMPLATE
           error[:line].to_s,
           error[:character].to_s
         ]
-        output << "      </failure>\n"
+        output << "\n</failure>\n"
       end
       output << "    </testcase>\n"
       output
