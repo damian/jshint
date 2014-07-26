@@ -73,7 +73,7 @@ TEMPLATE
       name = errors.first[:message]
       output << "    <testcase classname=\"jshint.#{code}\" name=\"#{escape(name)}\">\n"
       errors.each do |error|
-        output << "      <failure type=\"#{code}\" message=\"#{escape(error[:message])}\">\n"
+        output << "      <failure type=\"#{code}\" message=\"#{escape(error[:message])}\">"
         output << "%s, line %s, col %s\n" % [
           escape(error[:file]),
           error[:line].to_s,
