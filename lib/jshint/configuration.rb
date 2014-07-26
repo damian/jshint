@@ -75,7 +75,7 @@ module Jshint
     end
 
     def default_config_path
-      File.join(Rails.root, 'config', 'jshint.yml')
+      File.join(defined?(Rails) ? Rails.root : Dir.pwd, 'config', 'jshint.yml')
     end
   end
 end
