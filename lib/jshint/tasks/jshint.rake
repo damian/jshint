@@ -4,7 +4,8 @@ require 'jshint/reporters'
 namespace :jshint do
   desc "Runs JSHint, the JavaScript lint tool over this project's JavaScript assets"
   task :lint, [:reporter] => :environment do |_, args|
-	  args.with_defaults(reporter: :Default)
+	  # We need to OR this because we can call rake jshint. The argument gets pushed to extras.
+	  args.with_defaults(reporter: args.extras[0] || :Default)
 
     linter = Jshint::Lint.new
     linter.lint
