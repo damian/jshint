@@ -80,7 +80,7 @@ TEMPLATE
 					error[:character].to_s,
 					escape(error[:message])
 				]
-				output << "       </failure>\n"
+				output << "      </failure>\n"
 			end
 			output << "    </testcase>\n"
 			output
