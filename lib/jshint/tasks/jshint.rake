@@ -2,11 +2,13 @@ require 'jshint'
 require 'jshint/reporters'
 
 namespace :jshint do
-  desc "Runs JSHint, the JavaScript lint tool over this projects JavaScript assets"
-  task :lint => :environment do
+  desc "Runs JSHint, the JavaScript lint tool over this project's JavaScript assets"
+  task :lint, [:reporter] => :environment do |_, args|
+	  args.with_defaults(reporter: :Default)
+
     linter = Jshint::Lint.new
     linter.lint
-    reporter = Jshint::Reporters::Default.new(linter.errors)
+    reporter = Jshint::Reporters.const_get(args.reporter).new(linter.errors)
     puts reporter.report
   end
 
