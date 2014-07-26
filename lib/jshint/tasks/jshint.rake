@@ -18,6 +18,7 @@ namespace :jshint do
       stream.puts reporter.report
     end
     if file
+	    Dir.mkdir(File.dirname(file))
       File.open(file, 'w') do |stream|
         printer.call(stream)
       end
