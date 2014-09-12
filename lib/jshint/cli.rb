@@ -1,6 +1,6 @@
 module Jshint
   module Cli
-    def run(reporter_name = :Default, result_file = nil)
+    def self.run(reporter_name = :Default, result_file = nil)
       linter = Jshint::Lint.new
       linter.lint
       reporter = Jshint::Reporters.const_get(reporter_name).new(linter.errors)
@@ -10,8 +10,8 @@ module Jshint
       end
 
       if result_file
-        Dir.mkdir(File.dirname(file))
-        File.open(file, 'w') do |stream|
+        Dir.mkdir(File.dirname(result_file))
+        File.open(result_file, 'w') do |stream|
           printer.call(stream)
         end
       else
