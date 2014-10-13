@@ -75,13 +75,7 @@ TEMPLATE
       name = fetch_error_messages(code, errors)
       output << "    <testcase classname=\"jshint.#{code}\" name=\"#{escape(name)}\">\n"
       errors.each do |error|
-        output << "      <failure type=\"#{code}\" message=\"#{escape(error[:message])}\">"
-        output << "%s, line %s, col %s\n" % [
-          escape(error[:file]),
-          error[:line].to_s,
-          error[:character].to_s
-        ]
-        output << "\n</failure>\n"
+        output << add_error_message(code, error)
       end
       output << "    </testcase>\n"
       output
@@ -100,6 +94,16 @@ TEMPLATE
     def fetch_error_messages(code, errors)
       return '' if errors.empty?
       TESTS.fetch(code, errors.first[:message])
+    end
+
+    def add_error_message(code, error)
+      output << "      <failure type=\"#{code}\" message=\"#{escape(error[:message])}\">"
+      output << "%s, line %s, col %s\n" % [
+        escape(error[:file]),
+        error[:line].to_s,
+        error[:character].to_s
+      ]
+      output << "\n</failure>\n"
     end
 
     TESTS = {
