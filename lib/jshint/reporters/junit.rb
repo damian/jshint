@@ -72,15 +72,7 @@ TEMPLATE
     # @param errors [Array] The errors for the code
     # @return [void]
     def print_errors_for_code(code, errors)
-      name =
-        if TESTS[code]
-          TESTS[code]
-        elsif errors.empty?
-          ''
-        else
-          errors.first[:message]
-        end
-
+      name = fetch_error_messages(code, errors)
       output << "    <testcase classname=\"jshint.#{code}\" name=\"#{escape(name)}\">\n"
       errors.each do |error|
         output << "      <failure type=\"#{code}\" message=\"#{escape(error[:message])}\">"
@@ -104,6 +96,11 @@ TEMPLATE
     end
 
     private
+
+    def fetch_error_messages(code, errors)
+      return '' if errors.empty?
+      TESTS.fetch(code, errors.first[:message])
+    end
 
     TESTS = {
         E001: "Bad option: '{a}'.",
