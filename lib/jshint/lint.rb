@@ -12,13 +12,6 @@ module Jshint
     # @return [Jshint::Configuration] The configuration object
     attr_reader :config
 
-    # @return [Array] The standard location for JavaScript assets in a Rails project
-    RAILS_JS_ASSET_PATHS = [
-      'app/assets/javascripts',
-      'vendor/assets/javascripts',
-      'lib/assets/javascripts'
-    ]
-
     # Sets up our Linting behaviour
     #
     # @param config_path [String] The absolute path to a configuration YAML file
@@ -61,14 +54,15 @@ module Jshint
       get_json(content)
     end
 
-    def search_paths
-      paths = RAILS_JS_ASSET_PATHS.dup
+    def file_paths
+      paths = []
+
       if files.is_a? Array
         files.each do |file|
-          paths = paths.map { |path| File.join(path, file) }
+          config.search_paths.each { |path| paths << File.join(path, file) }
         end
       else
-        paths = paths.map { |path| File.join(path, files) }
+        config.search_paths.each { |path| paths << File.join(path, files) }
       end
 
       paths
@@ -100,7 +94,7 @@ module Jshint
 
     def javascript_files
       js_asset_files = []
-      search_paths.each do |path|
+      file_paths.each do |path|
         Dir.glob(path) do |file|
           js_asset_files << file
         end
