@@ -30,5 +30,24 @@ describe Jshint::Configuration do
       config = described_class.new
       config.files.should == ["**/*.js"]
     end
+
+    context "search paths" do
+      subject { described_class.new }
+
+      it "should default the exclusion paths to an empty array" do
+        subject.excluded_search_paths.should == []
+      end
+
+      it "should set the exclusion paths to those in the config" do
+        subject.options["exclude_paths"] << 'vendor/assets/javascripts'
+        subject.excluded_search_paths.should == ["vendor/assets/javascripts"]
+      end
+
+      it "should be the default search paths minus the exclude paths" do
+        subject.search_paths.should == subject.default_search_paths
+        subject.options["exclude_paths"] << 'vendor/assets/javascripts'
+        subject.search_paths.should == ['app/assets/javascripts', 'lib/assets/javascripts']
+      end
+    end
   end
 end

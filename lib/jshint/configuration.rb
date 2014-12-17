@@ -64,6 +64,22 @@ module Jshint
       options["files"]
     end
 
+    def excluded_search_paths
+      options.fetch("exclude_paths", [])
+    end
+
+    def search_paths
+      default_search_paths - excluded_search_paths
+    end
+
+    def default_search_paths
+      [
+        'app/assets/javascripts',
+        'vendor/assets/javascripts',
+        'lib/assets/javascripts'
+      ]
+    end
+
     private
 
     def read_config_file
