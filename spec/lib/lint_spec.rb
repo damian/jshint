@@ -61,6 +61,7 @@ describe Jshint::Lint do
 
             if (foo == baz) {
               bat = "gorge";
+              var x = "foo"; // jshint ignore:line
             }
           eos
         ))
