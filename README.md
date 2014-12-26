@@ -72,6 +72,9 @@ exclude_paths: ['vendor/assets/javascripts']
 ...
 ````
 
+## Changelog
+
+You can view the [changelog here](https://github.com/damian/jshint/blob/master/CHANGELOG.md).
 
 ## Contributing
 
