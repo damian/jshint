@@ -25,6 +25,13 @@ namespace :jshint do
     else
       printer.call($stdout)
     end
+
+    # Return an error code of 1 if there were any errors.
+    linter.errors.each do |file, errors|
+      if errors.length > 0
+        exit 1
+      end
+    end
   end
 
   desc "Copies the default JSHint options to your Rails application"
