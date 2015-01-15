@@ -6,8 +6,8 @@ namespace :jshint do
   desc "Runs JSHint, the JavaScript lint tool over this project's JavaScript assets"
   task :lint => :environment do |_, args|
     # Our own argument parsing, since rake jshint will push extra nil's.
-    reporter_name = args.extras[0] if args.extras.length >= 1
-    result_file = args.extras[1] if args.extras.length >= 2
+    reporter_name = args.extras[0] || :Default
+    result_file = args.extras[1]
 
     linter = Jshint::Cli::run(reporter_name, result_file)
     fail if linter.errors.any? { |_, errors| errors.any? }
