@@ -1,31 +1,15 @@
 require 'jshint'
 require 'jshint/reporters'
+require 'jshint/cli'
 
 namespace :jshint do
   desc "Runs JSHint, the JavaScript lint tool over this project's JavaScript assets"
   task :lint => :environment do |_, args|
     # Our own argument parsing, since rake jshint will push extra nil's.
-    reporter_name = :Default
-    file = nil
     reporter_name = args.extras[0] if args.extras.length >= 1
-    file = args.extras[1] if args.extras.length >= 2
+    result_file = args.extras[1] if args.extras.length >= 2
 
-    linter = Jshint::Lint.new
-    linter.lint
-    reporter = Jshint::Reporters.const_get(reporter_name).new(linter.errors)
-
-    printer = lambda do |stream|
-      stream.puts reporter.report
-    end
-    if file
-	    Dir.mkdir(File.dirname(file))
-      File.open(file, 'w') do |stream|
-        printer.call(stream)
-      end
-    else
-      printer.call($stdout)
-    end
-
+    linter = Jshint::Cli::run(reporter_name, result_file)
     fail if linter.errors.any? { |_, errors| errors.any? }
   end
 
