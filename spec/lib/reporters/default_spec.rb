@@ -46,67 +46,67 @@ describe Jshint::Reporters::Default do
   subject { described_class.new(results) }
 
   it "should initialize output to be an empty string" do
-    subject.output.should == ''
+    expect(subject.output).to eq('')
   end
 
-  describe :print_footer do
+  describe "print_footer" do
     it "should output a footer starting with a new line feed" do
-      subject.print_footer(3).start_with?("\n").should be_true
+      expect(subject.print_footer(3)).to start_with("\n")
     end
 
     it "should output a footer containing '3 errors'" do
-      subject.print_footer(3).should include "3 errors"
+      expect(subject.print_footer(3)).to include("3 errors")
     end
 
     it "should output a footer containing '1 error'" do
-      subject.print_footer(1).should include "1 error"
+      expect(subject.print_footer(1)).to include("1 error")
     end
   end
 
-  describe :print_errors_for_file do
+  describe "print_errors_for_file" do
     before do
       subject.print_errors_for_file("app/assets/javascripts/angular/controllers/feeds_controller.js", results["app/assets/javascripts/angular/controllers/feeds_controller.js"])
     end
 
     it "should add 3 entries in to the error output" do
-      subject.output.split(/\r?\n/).length.should == 3
+      expect(subject.output.split(/\r?\n/).length).to eq(3)
     end
 
     it "should contain the line number in to the error output" do
-      subject.output.should include "line 1"
+      expect(subject.output).to include("line 1")
     end
 
     it "should contain the column number in to the error output" do
-      subject.output.should include "col 1"
+      expect(subject.output).to include("col 1")
     end
 
     it "should contain the filename in to the error output" do
-      subject.output.should include "app/assets/javascripts/angular/controllers/feeds_controller.js"
+      expect(subject.output).to include("app/assets/javascripts/angular/controllers/feeds_controller.js")
     end
 
     it "should contain the nature of the error in to the error output" do
-      subject.output.should include "'app' is not defined"
+      expect(subject.output).to include("'app' is not defined")
     end
   end
 
-  describe :report do
+  describe "report" do
     it "should call print errors for file 1 time" do
-      subject.should_receive(:print_errors_for_file)
+      expect(subject).to receive(:print_errors_for_file)
       subject.report
     end
 
     it "should print the report footer" do
-      subject.should_receive(:print_footer).with(3)
+      expect(subject).to receive(:print_footer).with(3)
       subject.report
     end
 
     it "should return a thorough report" do
-      subject.report.length.should >= 10
+      expect(subject.report.length).to be >= 10
     end
 
     it "should return 0 errors when it has no results" do
       subject.instance_variable_set(:@results, {})
-      subject.report.should include "0 errors"
+      expect(subject.report).to include "0 errors"
     end
   end
 end

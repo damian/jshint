@@ -9,72 +9,74 @@ describe Jshint::Lint do
   let(:globals)       { MultiJson.dump({ :jquery => true, :app => true }) }
 
   subject do
-    Jshint::Configuration.stub(:new).and_return(configuration)
+    allow(Jshint::Configuration).to receive(:new).and_return(configuration)
     described_class.new
   end
 
   it "should initialize errors to an empty Hash" do
-    subject.errors.should be_a Hash
+    expect(subject.errors).to be_a Hash
   end
 
   it "should assing the Configration object to config" do
-    subject.config.should == configuration
+    expect(subject.config).to eq(configuration)
   end
 
   it "should respond to get_json" do
     hash = { :hello => 'world' }
-    MultiJson.should_receive(:dump).with(hash)
+    expect(MultiJson).to receive(:dump).with(hash)
     subject.get_json(hash)
   end
 
-  describe :lint do
+  describe "lint" do
     before do
-      subject.stub(:javascript_files).and_return(files)
-      subject.stub(:jshint_options).and_return(opts)
-      subject.stub(:jshint_globals).and_return(globals)
+      allow(subject).to receive(:javascript_files).and_return(files)
+      allow(subject).to receive(:jshint_options).and_return(opts)
+      allow(subject).to receive(:jshint_globals).and_return(globals)
     end
 
     context "invalid file" do
       before do
-        subject.stub(:get_file_content_as_json).and_return(subject.get_json(<<-eos
-            var foo = "bar",
-                baz = "qux",
-                bat;
+        allow(subject).to receive(:get_file_content_as_json).
+          and_return(subject.get_json(<<-eos
+              var foo = "bar",
+                  baz = "qux",
+                  bat;
 
-            if (foo == baz) bat = "gorge" // no semicolon and single line
-          eos
-        ))
+              if (foo == baz) bat = "gorge" // no semicolon and single line
+            eos
+          ))
         subject.lint
       end
 
       it "should add two error messages to the errors Hash" do
-        subject.errors[file].length.should == 2
+        expect(subject.errors[file].length).to eq(2)
       end
     end
 
     context "valid file" do
       before do
-        subject.stub(:get_file_content_as_json).and_return(subject.get_json(<<-eos
-            var foo = "bar",
-                baz = "qux",
-                bat;
+        allow(subject).to receive(:get_file_content_as_json).
+          and_return(subject.get_json(<<-eos
+              var foo = "bar",
+                  baz = "qux",
+                  bat;
 
-            if (foo == baz) {
-              bat = "gorge";
-              var x = "foo"; // jshint ignore:line
-            }
-          eos
-        ))
+              if (foo == baz) {
+                bat = "gorge";
+                var x = "foo"; // jshint ignore:line
+              }
+            eos
+          ))
         subject.lint
       end
 
       it "should retrieve the files content" do
-        subject.should_receive(:get_file_content_as_json).with(file)
+        expect(subject).to receive(:get_file_content_as_json).with(file)
         subject.lint
       end
 
       it "should add two error messages to the errors Hash" do
-        subject.errors[file].length.should == 0
+        expect(subject.errors[file].length).to eq(0)
       end
     end
   end
