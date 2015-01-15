@@ -27,7 +27,7 @@ describe Jshint::Lint do
     subject.get_json(hash)
   end
 
-  describe :lint do
+  describe "lint" do
     before do
       subject.stub(:javascript_files).and_return(files)
       subject.stub(:jshint_options).and_return(opts)

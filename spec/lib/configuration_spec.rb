@@ -12,8 +12,8 @@ describe Jshint::Configuration do
 
     it "should allow the developer to index in to config options" do
       config = described_class.new
-      config[:boss].should be_true
-      config[:browser].should be_true
+      config[:boss].should be_truthy
+      config[:browser].should be_truthy
     end
 
     it "should return a Hash of the global variables declared" do

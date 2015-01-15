@@ -49,9 +49,9 @@ describe Jshint::Reporters::Default do
     subject.output.should == ''
   end
 
-  describe :print_footer do
+  describe "print_footer" do
     it "should output a footer starting with a new line feed" do
-      subject.print_footer(3).start_with?("\n").should be_true
+      subject.print_footer(3).start_with?("\n").should be_truthy
     end
 
     it "should output a footer containing '3 errors'" do
@@ -63,7 +63,7 @@ describe Jshint::Reporters::Default do
     end
   end
 
-  describe :print_errors_for_file do
+  describe "print_errors_for_file" do
     before do
       subject.print_errors_for_file("app/assets/javascripts/angular/controllers/feeds_controller.js", results["app/assets/javascripts/angular/controllers/feeds_controller.js"])
     end
@@ -89,7 +89,7 @@ describe Jshint::Reporters::Default do
     end
   end
 
-  describe :report do
+  describe "report" do
     it "should call print errors for file 1 time" do
       subject.should_receive(:print_errors_for_file)
       subject.report
