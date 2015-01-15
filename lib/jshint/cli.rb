@@ -17,6 +17,8 @@ module Jshint
       else
         printer.call($stdout)
       end
+
+      linter
     end
   end
 end
