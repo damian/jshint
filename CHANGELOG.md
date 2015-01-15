@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.1
+
+* Fixes [#23](https://github.com/damian/jshint/pull/23) - Broken Rake task
+* [Upgraded to RSpec 3](https://github.com/damian/jshint/pull/22)
+
 ## 1.3.0
 
 * Fixes [#18](https://github.com/damian/jshint/pull/18) - Ensure the default Rake task runs the test suite
