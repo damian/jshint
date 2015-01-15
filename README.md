@@ -72,6 +72,15 @@ exclude_paths: ['vendor/assets/javascripts']
 ...
 ````
 
+## Rake integration
+To use jshint in your default Rake config, just add it to the list of default tasks. For example, this configuration will run jshint in development or test environments.
+````ruby
+# your-rails-project/Rakefile
+if %w(development test).include? Rails.env
+  task default: :jshint
+endif
+````
+
 ## Changelog
 
 You can view the [changelog here](https://github.com/damian/jshint/blob/master/CHANGELOG.md).
@@ -83,4 +92,3 @@ You can view the [changelog here](https://github.com/damian/jshint/blob/master/C
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
-
