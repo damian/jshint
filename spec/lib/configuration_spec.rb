@@ -41,16 +41,27 @@ describe Jshint::Configuration do
         expect(subject.excluded_search_paths).to eq([])
       end
 
-      it "should set the exclusion paths to those in the config" do
-        subject.options["exclude_paths"] << 'vendor/assets/javascripts'
-        expect(subject.excluded_search_paths).to eq(["vendor/assets/javascripts"])
+      describe "include search paths" do
+        it "should set the exclusion paths to those in the config" do
+          subject.options["include_paths"] ||= []
+          subject.options["include_paths"] << 'spec/javascripts'
+          expect(subject.included_search_paths).to eq(["spec/javascripts"])
+          expect(subject.search_paths).to include("spec/javascripts")
+        end
       end
 
-      it "should be the default search paths minus the exclude paths" do
-        expect(subject.search_paths).to eq(subject.default_search_paths)
-        subject.options["exclude_paths"] << 'vendor/assets/javascripts'
-        expect(subject.search_paths).
-          to eq(['app/assets/javascripts', 'lib/assets/javascripts'])
+      describe "exclude search paths" do
+        it "should set the exclusion paths to those in the config" do
+          subject.options["exclude_paths"] << 'vendor/assets/javascripts'
+          expect(subject.excluded_search_paths).to eq(["vendor/assets/javascripts"])
+        end
+
+        it "should be the default search paths minus the exclude paths" do
+          expect(subject.search_paths).to eq(subject.default_search_paths)
+          subject.options["exclude_paths"] << 'vendor/assets/javascripts'
+          expect(subject.search_paths).
+            to eq(['app/assets/javascripts', 'lib/assets/javascripts'])
+        end
       end
     end
   end

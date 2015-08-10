@@ -68,8 +68,12 @@ module Jshint
       options.fetch("exclude_paths", [])
     end
 
+    def included_search_paths
+      options.fetch("include_paths", [])
+    end
+
     def search_paths
-      default_search_paths - excluded_search_paths
+      (default_search_paths + included_search_paths) - excluded_search_paths
     end
 
     def default_search_paths

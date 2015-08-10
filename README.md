@@ -8,7 +8,7 @@ Making it easy to lint your JavaScript assets in any Rails 3.1+ application.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your Rails application's Gemfile:
 
 ```ruby
 group :development, :test do
@@ -36,7 +36,7 @@ To start using JSHint simply run the Rake task:
 bundle exec rake jshint
 ```
 
-This Rake task runs JSHint across all the JavaScript assets within the following three folders to ensure that they're lint free. Using that data it builds a report which is shown in STDOUT.
+This Rake task runs JSHint across any JavaScript files contained within the following three folders in your Rails application to ensure that they're lint free. Using that data it builds a report which is shown in STDOUT.
 
 ```bash
 your-rails-project/app/assets/javascripts
@@ -46,7 +46,7 @@ your-rails-project/lib/assets/javascripts
 
 ## Configuration
 
-JSHint has some configuration options. You can read the default configuration created by JSHint in your applications config folder.
+JSHint has some configuration options. You can read the default configuration created by JSHint in `config/jshint.yml` within your application.
 
 ```yaml
 # your-rails-project/config/jshint.yml
@@ -61,6 +61,16 @@ options:
     $: true
 ```
 For more configuration options see the [JSHint documentation](http://jshint.com/docs/options/).
+
+### Including folders to be Linted
+
+To add folders outside of the standard Rails asseet paths, you can define an array of `include_paths` within your configuration file.
+
+````yaml
+files: ['**/*.js']
+include_paths: ['spec/javascripts']
+...
+````
 
 ### Excluding folders from being Linted
 
