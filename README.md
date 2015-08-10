@@ -36,6 +36,12 @@ To start using JSHint simply run the Rake task:
 bundle exec rake jshint
 ```
 
+You can specify an other path to your configuration file via:
+
+```ruby
+bundle exec rake jshint:lint['path/to/your/config.yml']
+```
+
 This Rake task runs JSHint across all the JavaScript assets within the following three folders to ensure that they're lint free. Using that data it builds a report which is shown in STDOUT.
 
 ```bash
