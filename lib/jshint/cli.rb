@@ -1,7 +1,7 @@
 module Jshint
   module Cli
-    def self.run(reporter_name = :Default, result_file = nil)
-      linter = Jshint::Lint.new
+    def self.run(reporter_name = :Default, result_file = nil, config_path = nil)
+      linter = Jshint::Lint.new(config_path)
       linter.lint
       reporter = Jshint::Reporters.const_get(reporter_name).new(linter.errors)
 

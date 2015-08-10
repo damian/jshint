@@ -62,6 +62,14 @@ options:
 ```
 For more configuration options see the [JSHint documentation](http://jshint.com/docs/options/).
 
+### Custom configuration
+
+You can specify an other path to your configuration file via:
+
+```ruby
+bundle exec rake jshint:lint['path/to/your/config.yml']
+```
+
 ### Including folders to be Linted
 
 To add folders outside of the standard Rails asseet paths, you can define an array of `include_paths` within your configuration file.
