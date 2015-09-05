@@ -96,7 +96,7 @@ To use jshint in your default Rake config, just add it to the list of default ta
 # your-rails-project/Rakefile
 if %w(development test).include? Rails.env
   task default: :jshint
-endif
+end
 ````
 
 ## Changelog
