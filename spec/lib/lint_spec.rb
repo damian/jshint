@@ -53,6 +53,23 @@ describe Jshint::Lint do
       end
     end
 
+    context "invalid string" do
+      it "should add two error messages to the errors Hash" do
+        error_key ="js snippet"
+        js_string = <<-eos
+          var foo = "bar",
+          baz = "qux",
+          bat;
+
+          if (foo == baz) bat = "gorge" // no semicolon and single line
+        eos
+
+        subject.lint error_key, js_string
+
+        expect(subject.errors[error_key].length).to eq(2)
+      end
+    end
+
     context "valid file" do
       before do
         allow(subject).to receive(:get_file_content_as_json).
@@ -75,8 +92,28 @@ describe Jshint::Lint do
         subject.lint
       end
 
-      it "should add two error messages to the errors Hash" do
+      it "should add no error messages to the errors Hash" do
         expect(subject.errors[file].length).to eq(0)
+      end
+    end
+
+    context "valid string" do
+      it "should add no error messages to the errors Hash" do
+        error_key = "js snippet"
+        js_string = <<-eos
+          var foo = "bar",
+              baz = "qux",
+              bat;
+
+          if (foo == baz) {
+            bat = "gorge";
+            var x = "foo"; // jshint ignore:line
+          }
+        eos
+
+        subject.lint error_key, js_string
+
+        expect(subject.errors[error_key].length).to eq(0)
       end
     end
   end

@@ -23,15 +23,17 @@ module Jshint
 
     # Runs JSHint over each file in our search path
     #
+    # If the error_key and js_string fields are present, then JSHint
+    # will be run over the string.
+    #
+    # @param error_key [String] The key that any errors will be underneath in the errors Hash
+    # @param js_string [String] The javascript to be linted
     # @return [void]
-    def lint
-      javascript_files.each do |file|
-        file_content = get_file_content_as_json(file)
-        code = %(
-          JSHINT(#{file_content}, #{jshint_options}, #{jshint_globals});
-          return JSHINT.errors;
-        )
-        errors[file] = context.exec(code)
+    def lint(error_key = nil, js_string = nil)
+      if js_string
+        lint_string error_key, js_string
+      else
+        lint_files
       end
     end
 
@@ -44,6 +46,24 @@ module Jshint
     end
 
     private
+    def lint_files
+      javascript_files.each do |file|
+        run_content file, get_file_content_as_json(file)
+      end
+    end
+
+    def lint_string error_key, content
+      json_content = get_json(content)
+      run_content error_key, json_content
+    end
+
+    def run_content error_key, content
+      code = %(
+        JSHINT(#{content}, #{jshint_options}, #{jshint_globals});
+        return JSHINT.errors;
+      )
+      errors[error_key] = context.exec(code)
+    end
 
     def get_file_content(path)
       File.open(path, "r:UTF-8").read
