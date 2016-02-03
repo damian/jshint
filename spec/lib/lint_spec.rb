@@ -79,5 +79,35 @@ describe Jshint::Lint do
         expect(subject.errors[file].length).to eq(0)
       end
     end
+
+    context "excluded subdirectory" do
+      let(:search_paths) { [ 'app/assets/javascripts' ] }
+      let(:excluded_search_paths) { [ 'app/assets/javascripts/i18n' ] }
+      let(:excluded_file) { 'app/assets/javascripts/i18n/test.js' }
+      let(:files) { '**/*.js' }
+      let(:javascript_files) { [excluded_file] }
+
+      before do
+        allow(subject).to receive(:javascript_files).and_call_original
+        allow(configuration).to receive(:search_paths).and_return(search_paths)
+        allow(configuration).to receive(:excluded_search_paths).and_return(excluded_search_paths)
+        allow(configuration).to receive(:files).and_return(files)
+        allow(Dir).to receive(:glob).and_yield(javascript_files)
+        allow(subject).to receive(:get_file_content_as_json).
+          and_return(subject.get_json(<<-eos
+              var foo = "bar",
+                  baz = "qux",
+                  bat;
+
+              if (foo == baz) bat = "gorge" // no semicolon and single line
+            eos
+          ))
+      end
+
+      it "shouldn't load files in excluded subdirectory" do
+        expect(subject).to_not receive(:get_file_content_as_json)
+        subject.lint
+      end
+    end
   end
 end
