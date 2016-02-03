@@ -85,7 +85,7 @@ describe Jshint::Lint do
       let(:excluded_search_paths) { [ 'app/assets/javascripts/i18n' ] }
       let(:excluded_file) { 'app/assets/javascripts/i18n/test.js' }
       let(:files) { '**/*.js' }
-      let(:javascript_files) { [file, excluded_file] }
+      let(:javascript_files) { [excluded_file] }
 
       before do
         allow(subject).to receive(:javascript_files).and_call_original
@@ -105,7 +105,7 @@ describe Jshint::Lint do
       end
 
       it "shouldn't load files in excluded subdirectory" do
-        expect(subject).to receive(:get_file_content_as_json).with([file])
+        expect(subject).to_not receive(:get_file_content_as_json)
         subject.lint
       end
     end
