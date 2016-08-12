@@ -68,6 +68,10 @@ module Jshint
       options.fetch("exclude_paths", [])
     end
 
+    def excluded_files
+      options.fetch("exclude_files", [])
+    end
+
     def included_search_paths
       options.fetch("include_paths", [])
     end
