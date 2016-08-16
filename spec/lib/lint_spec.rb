@@ -3,10 +3,13 @@ require 'jshint'
 
 describe Jshint::Lint do
   let(:file)          { 'foo/bar/baz.js' }
-  let(:files)         { [file] }
+  let(:excluded_file) { 'foo/bar/qux.js' }
+  let(:files)         { [file, excluded_file] }
   let(:configuration) { double("Configuration").as_null_object }
   let(:opts)          { MultiJson.dump({ :curly => true, :newcap => true }) }
   let(:globals)       { MultiJson.dump({ :jquery => true, :app => true }) }
+  let(:file_paths)    { ['foo/**/*.js'] }
+  let(:excluded_files){ [excluded_file] }
 
   subject do
     allow(Jshint::Configuration).to receive(:new).and_return(configuration)
@@ -78,6 +81,19 @@ describe Jshint::Lint do
       it "should add two error messages to the errors Hash" do
         expect(subject.errors[file].length).to eq(0)
       end
+    end
+  end
+
+  describe 'javascript_files' do
+
+    before do
+      allow(subject).to receive(:file_paths).and_return(file_paths)
+      allow(subject.config).to receive(:excluded_files).and_return(excluded_files)
+      allow(Dir).to receive(:glob).with(anything()).and_yield(file).and_yield(excluded_file)
+    end
+
+    it 'should not include excluded files' do
+      expect(subject.send(:javascript_files)).to eq([file])
     end
   end
 end
