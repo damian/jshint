@@ -63,6 +63,13 @@ describe Jshint::Configuration do
             to eq(['app/assets/javascripts', 'lib/assets/javascripts'])
         end
       end
+
+      describe "exclude files" do
+        it 'should set the exclusion files to those in the config' do
+          subject.options['exclude_files'] << 'app/assets/javascripts/file.js'
+          expect(subject.excluded_files).to eq(['app/assets/javascripts/file.js'])
+        end
+      end
     end
   end
 end
