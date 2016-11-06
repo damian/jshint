@@ -52,6 +52,7 @@ JSHint has some configuration options. You can read the default configuration cr
 # your-rails-project/config/jshint.yml
 files: ['**/*.js']
 exclude_paths: []
+exclude_files: []
 options:
   boss: true
   browser: true
@@ -72,7 +73,7 @@ bundle exec rake jshint:lint['path/to/your/config.yml']
 
 ### Including folders to be Linted
 
-To add folders outside of the standard Rails asseet paths, you can define an array of `include_paths` within your configuration file.
+To add folders outside of the standard Rails asset paths, you can define an array of `include_paths` within your configuration file.
 
 ````yaml
 files: ['**/*.js']
@@ -82,11 +83,21 @@ include_paths: ['spec/javascripts']
 
 ### Excluding folders from being Linted
 
-To exclude one of the above folders from being linted, you can define an array of `exclude_paths` within your configuration file.
+To exclude a folder from being linted you can define an array of `exclude_paths` within your configuration file.
 
 ````yaml
 files: ['**/*.js']
-exclude_paths: ['vendor/assets/javascripts']
+exclude_paths: ['vendor', 'app/assets/javascripts/tests/']
+...
+````
+
+### Excluding files from being Linted
+
+To exclude a file from being linted you can define an array of `exclude_files` within your configuration file.
+
+````yaml
+files: ['**/*.js']
+exclude_files: ['**/*test.js']
 ...
 ````
 

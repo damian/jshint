@@ -25,7 +25,7 @@ module Jshint
     #
     # @return [void]
     def lint
-      javascript_files.each do |file|
+      config.javascript_files.each do |file|
         file_content = get_file_content_as_json(file)
         code = %(
           JSHINT(#{file_content}, #{jshint_options}, #{jshint_globals});
@@ -54,24 +54,6 @@ module Jshint
       get_json(content)
     end
 
-    def file_paths
-      paths = []
-
-      if files.is_a? Array
-        files.each do |file|
-          config.search_paths.each { |path| paths << File.join(path, file) }
-        end
-      else
-        config.search_paths.each { |path| paths << File.join(path, files) }
-      end
-
-      paths
-    end
-
-    def files
-      @files ||= config.files
-    end
-
     def jshint_globals
       @jshint_globals ||= get_json(config.global_variables)
     end
@@ -90,17 +72,6 @@ module Jshint
 
     def context
       @context ||= ExecJS.compile("var window = {};\n" + jshint)
-    end
-
-    def javascript_files
-      js_asset_files = []
-      file_paths.each do |path|
-        Dir.glob(path) do |file|
-          js_asset_files << file
-        end
-      end
-
-      js_asset_files
     end
   end
 end
