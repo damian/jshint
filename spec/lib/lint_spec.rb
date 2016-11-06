@@ -29,7 +29,7 @@ describe Jshint::Lint do
 
   describe "lint" do
     before do
-      allow(subject).to receive(:javascript_files).and_return(files)
+      allow(configuration).to receive(:javascript_files).and_return(files)
       allow(subject).to receive(:jshint_options).and_return(opts)
       allow(subject).to receive(:jshint_globals).and_return(globals)
     end

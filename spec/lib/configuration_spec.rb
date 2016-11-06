@@ -38,14 +38,14 @@ describe Jshint::Configuration do
       subject { described_class.new }
 
       it "should default the exclusion paths to an empty array" do
-        expect(subject.excluded_search_paths).to eq([])
+        expect(subject.exclude_paths).to eq([])
       end
 
       describe "include search paths" do
         it "should set the exclusion paths to those in the config" do
           subject.options["include_paths"] ||= []
           subject.options["include_paths"] << 'spec/javascripts'
-          expect(subject.included_search_paths).to eq(["spec/javascripts"])
+          expect(subject.include_paths).to eq(["spec/javascripts"])
           expect(subject.search_paths).to include("spec/javascripts")
         end
       end
@@ -53,15 +53,33 @@ describe Jshint::Configuration do
       describe "exclude search paths" do
         it "should set the exclusion paths to those in the config" do
           subject.options["exclude_paths"] << 'vendor/assets/javascripts'
-          expect(subject.excluded_search_paths).to eq(["vendor/assets/javascripts"])
+          expect(subject.exclude_paths).to eq(["vendor/assets/javascripts"])
         end
+      end
+    end
 
-        it "should be the default search paths minus the exclude paths" do
-          expect(subject.search_paths).to eq(subject.default_search_paths)
-          subject.options["exclude_paths"] << 'vendor/assets/javascripts'
-          expect(subject.search_paths).
-            to eq(['app/assets/javascripts', 'lib/assets/javascripts'])
-        end
+    context "javascript_files" do
+      it "knows what files to include by default" do
+        expect(subject.javascript_files).to eq(["vendor/assets/javascripts/jshint.js"])
+      end
+      it "knows what files to include when specifying include files and inlude paths" do
+        subject.options["include_paths"] = ["lib/jshint"]
+        subject.options["files"] = ["**/*.rake"]
+        expect(subject.javascript_files).to eq(["lib/jshint/tasks/jshint.rake"])
+      end
+      it "knows what files to exclude when specifying exclude files" do
+        subject.options["exclude_files"] = ["**/*jshi*"]
+        expect(subject.javascript_files).to eq([])
+      end
+      it "knows what files to exclude when specifying exclude paths" do
+        subject.options["exclude_paths"] = ["vendor"]
+        expect(subject.javascript_files).to eq([])
+      end
+    end
+
+    context "get_files" do
+      it "gets all matching files in given search paths" do
+        expect(subject.send(:get_files, ["vendor"], ["**/*.js"])).to eq(["vendor/assets/javascripts/jshint.js"])
       end
     end
   end

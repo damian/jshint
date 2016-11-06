@@ -61,19 +61,23 @@ module Jshint
     #
     # @return [Array<String>] An Array of String files paths
     def files
-      options["files"]
+      options.fetch("files", [])
     end
 
-    def excluded_search_paths
+    def exclude_files
+      options.fetch("exclude_files", [])
+    end
+
+    def exclude_paths
       options.fetch("exclude_paths", [])
     end
 
-    def included_search_paths
+    def include_paths
       options.fetch("include_paths", [])
     end
 
     def search_paths
-      (default_search_paths + included_search_paths) - excluded_search_paths
+      default_search_paths + include_paths
     end
 
     def default_search_paths
@@ -82,6 +86,10 @@ module Jshint
         'vendor/assets/javascripts',
         'lib/assets/javascripts'
       ]
+    end
+
+    def javascript_files
+      get_files(search_paths, files) - get_files(exclude_paths, files) - get_files(search_paths, exclude_files)
     end
 
     private
@@ -96,6 +104,10 @@ module Jshint
 
     def default_config_path
       File.join(defined?(Rails) ? Rails.root : Dir.pwd, 'config', 'jshint.yml')
+    end
+
+    def get_files paths, files
+      paths.map{ |path| files.map{ |file| Dir.glob(File.join(path, file)) }}.flatten
     end
   end
 end
