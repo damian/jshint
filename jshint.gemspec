@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "railties", ">= 3.2.0", "< 5.0.0"
   spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec", "~> 3.1.0"
+  spec.add_development_dependency "rspec", "~> 3.5.0"
   spec.add_development_dependency "yard"
   spec.add_development_dependency "tins", "~> 1.6.0"
   spec.add_development_dependency 'term-ansicolor', '~> 1.3.0'
